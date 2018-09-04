@@ -13,31 +13,48 @@
 
 
 ;; =================
-;; Data definitions:
+;; Struct definitions:
 
 ;Position is (make-position Number Number)
-;interp. position contains an x and y coordinate
+;interp. position contains an x and y coordinate, (x,y) is center
 (define-struct position (x y))
 
 ;Vector is (make-vector Number Number[0,360])
 ;interp. vector contains magnitude and angle in degrees
 (define-struct vector (magnitude angle))
 
-;;Entity is (make-entity (make-position Number Number) Number [0, infinity))
-;interp. entity contains a position struct, mass, and the image to draw
-(define-struct entity (position mass sprite))
+;Entity is (make-entity (make-position Number Number) Number [0, infinity) image vector)
+;interp. entity contains a position struct, mass, the image to draw, and a velocity vector.
+(define-struct entity (position mass sprite velocity))
 
-;Force is (make-force (make-vector Number Number[0,360]))
-;interp. force is a specialized vector.
-(define-struct force (vector))
+;Collision-pair is (make-collision-pair entity entity)
+;interp. two entitys that are colliding
+(define-struct collision-pair (entity1 entity2))
 
+;WS is (make-WS ListOfEntities)
+;interp. WS is the worldstate, contains list of all entities in the world.
+(define-struct WS (listOfEntities))
 
-;; WS is ... (give WS a better name)
+;; =================
+;; Data Definitions:
 
+;ListOfEntities is:
+;-empty
+;(cons entity ListOfEntities)
+
+#;
+(define (fn-for-loe loe)
+  (cond [(empty? loe) ...]
+        [else
+         (... (first loe)
+              (fn-for-loe (rest loe)))])) ;template
 
 
 ;; =================
 ;; Functions:
+
+;;PLANNED
+
 
 ;; WS -> WS
 ;; start the world with ...
