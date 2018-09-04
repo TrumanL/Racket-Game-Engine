@@ -31,6 +31,10 @@
 ;interp. two entitys that are colliding
 (define-struct collision-pair (entity1 entity2))
 
+;Hitbox is (make-hitbox Rectangle Position)
+;interp. hitbox contains rectangle and position of hitbox
+(define-struct hitbox (rectangle pos))
+
 ;WS is (make-WS ListOfEntities)
 ;interp. WS is the worldstate, contains list of all entities in the world.
 (define-struct WS (listOfEntities))
@@ -55,6 +59,32 @@
 
 ;;PLANNED
 
+;;HELPERS
+;ListOfEntities -> ListOfCollision-Pairs
+;Takes a list of entities and returns all entities colliding with another entity inside of a collision-pair list
+(define (flag-collisions loe)
+  (cond [(empty? loe) empty]
+        [else ...]))
+         
+
+;Entity, ListOfEntities -> Collision-Piar
+;takes an entity and a list of entities and returns collision pair of entity colliding with a thing
+(define (colliding entity loe)
+  (cond [(empty? loe) empty]
+        [else
+         (if (entity))]))
+
+;Entity -> Hitbox
+;creates a hitbox from entity
+(define (create-hitbox entity)
+  (make-hitbox (rectangle ((image-width (entity-sprite entity)) ((image-height (entity-sprite entity))) "solid" "blue")) (entity-position entity)))
+
+;Hitbox Hitbox -> Boolean
+;determines if two hitboxes are colliding
+(define (colliding? box1 box2)
+  (cond [(> ( + (hitbox-pos-x box1) (/ (image-width (hitbox-rectangle box1)) 2)) ( - (hitbox-pos-x box2) (/ (image-width (hitbox-rectangle box2)) 2))) true]
+        [(< ( + (hitbox-pos-x box1) (/ (image-width (hitbox-rectangle box1)) 2)) ( - (hitbox-pos-x box2) (/ (image-width (hitbox-rectangle box2)) 2))) true]
+  )
 
 ;; WS -> WS
 ;; start the world with ...
@@ -70,7 +100,9 @@
 ;; WS -> WS
 ;; produce the next ...
 ;; !!!
-(define (tock ws) ...)
+(define (tock ws)
+  
+  )
 
 
 ;; WS -> Image
