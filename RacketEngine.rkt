@@ -64,7 +64,7 @@
 ;Takes a list of entities and returns all entities colliding with another entity inside of a collision-pair list
 (define (flag-collisions loe)
   (cond [(empty? loe) empty]
-        [else ...]))
+        [else (cons (colliding (first loe) loe) (flag-collisions (rest loe)))]))
          
 
 ;Entity, ListOfEntities -> Collision-Piar
@@ -72,12 +72,14 @@
 (define (colliding entity loe)
   (cond [(empty? loe) empty]
         [else
-         (if (entity))]))
+         (if (colliding? (create-hitbox entity) (create-hitbox (first loe)))
+             (make-collision-pair entity (first loe))
+             (colliding entity (rest loe)))]))
 
 ;Entity -> Hitbox
 ;creates a hitbox from entity
 (define (create-hitbox entity)
-  (make-hitbox (rectangle ((image-width (entity-sprite entity)) ((image-height (entity-sprite entity))) "solid" "blue")) (entity-position entity)))
+  (make-hitbox (rectangle (image-width (entity-sprite entity)) (image-height (entity-sprite entity)) "solid" "blue") (entity-position entity)))
 
 ;Hitbox Hitbox -> Boolean
 ;determines if two hitboxes are colliding
