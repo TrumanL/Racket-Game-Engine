@@ -10,7 +10,7 @@
 ;; Constants:
 (define WIDTH 800)
 (define HEIGHT 600)
-
+(define MTS (empty-scene WIDTH HEIGHT))
 
 ;; =================
 ;; Struct definitions:
@@ -34,6 +34,9 @@
 ;WS is (make-WS ListOfEntities)
 ;interp. WS is the worldstate, contains list of all entities in the world.
 (define-struct WS (listOfEntities))
+(define loe (list (make-entity (make-position 100 100) 100 (circle 100 "solid" "red") (make-vector 0 0))
+                  (make-entity (make-position 500 50) 50 (square 100 "solid" "red") (make-vector 0 0))))
+
 
 ;; =================
 ;; Data Definitions:
@@ -74,6 +77,31 @@
 
 
 ;; WS -> Image
-;; render ... 
+;; render ...
+(check-expect (render (make-WS loe)) (place-image (place-image
+                                                   (entity-sprite (second loe))
+                                                   (position-x (entity-position (second loe)))
+                                                   (position-y (entity-position (second loe)))
+                                                   (place-image
+                                                    (entity-sprite (first loe))
+                                                    (position-x (entity-position (first loe)))
+                                                    (position-y (entity-position (first loe))) MTS))
+                                                  (/ WIDTH 2)
+                                                  (/ HEIGHT 2)
+                                                  MTS))
 ;; !!!
-(define (render ws) ...)
+(define (render ws)
+  (place-image (compile-image (WS-listOfEntities ws)) (/ WIDTH 2) (/ HEIGHT 2) MTS))
+
+
+;;compile-image
+;; LisOfEntities -> Image
+;; interp. converts a list of entities into a single image
+(define (compile-image LOE)
+  (cond [(empty? LOE) MTS]
+        [else
+         (place-image
+          (entity-sprite (first LOE))
+          (position-x (entity-position (first LOE)))
+          (position-y (entity-position (first LOE)))
+          (compile-image (rest LOE)))]))
